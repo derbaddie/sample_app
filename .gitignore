@@ -36,3 +36,6 @@
 
 # ignore database testfiles
 /db/test.sqlite3
+
+# ignore Spring files
+/spring/*.pid
