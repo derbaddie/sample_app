@@ -58,7 +58,13 @@ module SessionsHelper
   # Log sout the current user
   def log_out
     forget(current_user)
-    session.delete(:user_id)
+    reset_session
     @current_user = nil
   end
+
+  # Stores the URL trying to be accessed.
+  def store_location
+    session[:forwarding_url] = request.original_url if request.get?
+  end
+
 end
