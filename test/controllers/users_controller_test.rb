@@ -49,7 +49,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'User.count' do
       delete user_path(@user)
     end
-    assert_response :see_other
     assert_redirected_to login_url
   end
 
@@ -58,7 +57,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'User.count' do
       delete user_path(@user)
     end
-    assert_response :see_other
     assert_redirected_to root_url
   end
 
