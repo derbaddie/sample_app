@@ -13,17 +13,14 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      reset_session
       @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
-      # Handle a successful save.
     else
       render 'new', status: :unprocessable_entity
     end
@@ -33,14 +30,14 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def update	
-    @user = User.find(params[:id])	
-    if @user.update(user_params)	
-      flash[:success] = "Profile updated"	
-      redirect_to @user	
-    else	
-      render 'edit', status: :unprocessable_entity	
-    end	
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:success] = "Profile updated"
+      redirect_to @user
+    else
+      render 'edit', status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -53,17 +50,17 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :admin)
+                                   :password_confirmation)
     end
 
     # Before filters
 
-    # Confirms a logged-in user
+    # Confirms a logged-in user.
     def logged_in_user
       unless logged_in?
         store_location
         flash[:danger] = "Please log in."
-        redirect_to(login_url)
+        redirect_to login_url
       end
     end
 
@@ -73,6 +70,7 @@ class UsersController < ApplicationController
       redirect_to(root_url, status: :see_other) unless current_user?(@user)
     end
 
+    # Confirms an admin user.
     def admin_user
       redirect_to(root_url, status: :see_other) unless current_user.admin?
     end
